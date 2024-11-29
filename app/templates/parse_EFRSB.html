@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Оценить актив опираясь на сайт ЕФРСБ</title>
+    <script>
+        async function startProcess() {
+            var link = document.getElementsByName('link')[0].value;
+            var prefix = 'https://fedresurs.ru/biddings'; 
+            if (!link.startsWith(prefix)) {
+                alert('Ссылка должна начинаться с "https://fedresurs.ru/biddings".');
+                return;
+            }
+            document.getElementById('waiting').style.display = 'block';
+
+            try {
+                const response = await fetch('/parse_scrapy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ link: link, aa:"as" })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    displayResult(data.result, data.summary);
+                } else {
+                    alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Не удалось связаться с сервером.');
+            } finally {
+                document.getElementById('waiting').style.display = 'none';
+            }
+        }
+
+        function displayResult(data, summary) {
+            const result_analyz = document.getElementById('res_analyz');
+
+            let table_rez = "<table>";
+            table_rez += `<tr><th>средняя цена актива</th></tr><tr><td>${summary.av}</td></tr>`;
+            table_rez += "</table>";
+
+            result_analyz.innerHTML = table_rez;
+            result_analyz.style.display = 'block';
+
+            const result_active = document.getElementById('result');
+            let table = "<table>";
+                table += "<tr><th>Дата окончания торгов</th><th>Цена</th><th>Описание</th><th>Ссылка</th></tr>";
+                        // Добавляем строки
+                        data.forEach(row => { table += `<tr>
+                            <td>${row.date}</td>
+                            <td>${row.final_price}</td>
+                            <td>${row.description}</td>
+                            <td><a href="${row.url}" target="_blank">${row.url}</a></td>
+                          </tr>`;
+            });
+            table += "</table>";
+            result_active.innerHTML = table;
+            //resultDiv.innerHTML = `<h2>Результаты:</h2><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            result_active.style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <h1>Введите ссылку</h1>
+    <form id="form" onsubmit="event.preventDefault(); startProcess();">
+        <input type="url" name="link" placeholder="Введите ссылку" required> <br><br>
+        <button type="button" onclick="startProcess()">Обработать</button>
+    </form>
+    <p id="waiting" style="display: none; color: red;">Ожидайте, идет обработка...</p>
+    <div id="res_analyz" style="display: none; margin-top: 20px;">
+        <h2>Краткий анализ результата</h2>
+    </div>
+    <div id="result" style="display: none; margin-top: 20px;"></div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+-----------------------------------------------------
+goto(url)
+Переходит на указанную страницу.
+Пример: PageMethod("goto", url="https://example.com")
+-----------------------------------------------------
+screenshot(path="example.png", full_page=True)
+Делает скриншот страницы.
+Параметр full_page=True позволяет захватить всю страницу целиком.
+Пример: PageMethod("screenshot", path="screenshot.png", full_page=True)
+-----------------------------------------------------
+click(selector)
+Нажимает на элемент, определенный селектором.
+Пример: PageMethod("click", selector="#submit")
+-----------------------------------------------------
+fill(selector, text)
+Заполняет текстом элемент <input> или <textarea>.
+Пример: PageMethod("fill", selector="#username", text="my_username")
+-----------------------------------------------------
+select_option(selector, value)
+Выбирает опцию из выпадающего списка <select>.
+Пример: PageMethod("select_option", selector="#country", value="US")
+-----------------------------------------------------
+hover(selector)
+Наводит курсор на элемент, определенный селектором.
+Пример: PageMethod("hover", selector="#menu-item")
+-----------------------------------------------------
+wait_for_selector(selector, timeout=30000)
+Ожидает, пока на странице появится элемент, соответствующий селектору.
+timeout задает максимальное время ожидания в миллисекундах.
+Пример: PageMethod("wait_for_selector", selector=".loaded", timeout=5000)
+-----------------------------------------------------
+wait_for_timeout(timeout)
+Ждет указанное количество миллисекунд (полезно для отладки).
+Пример: PageMethod("wait_for_timeout", timeout=2000)
+-----------------------------------------------------
+evaluate(expression)
+Выполняет JavaScript-выражение в контексте страницы.
+Пример: PageMethod("evaluate", expression="document.title")
+-----------------------------------------------------
+evaluate_handle(expression)
+Выполняет JavaScript-выражение и возвращает ссылку на объект.
+Пример: PageMethod("evaluate_handle", expression="document.body")
+-----------------------------------------------------
+content()
+Получает полный HTML-контент страницы.
+Пример: PageMethod("content")
+-----------------------------------------------------
+set_viewport_size(width, height)
+Устанавливает размер окна браузера.
+Пример: PageMethod("set_viewport_size", width=1024, height=768)
+-----------------------------------------------------
+add_script_tag(url=None, path=None, content=None)
+Вставляет на страницу тег <script>. Можно указать URL, путь к файлу или содержимое скрипта.
+Пример: PageMethod("add_script_tag", url="https://example.com/script.js")
+-----------------------------------------------------
+add_style_tag(url=None, path=None, content=None)
+Вставляет на страницу тег <style>. Можно указать URL, путь к файлу или CSS-контент.
+Пример: PageMethod("add_style_tag", content="body {background-color: red;}")
+-----------------------------------------------------
+reload()
+Обновляет текущую страницу.
+Пример: PageMethod("reload")
+-----------------------------------------------------
+go_back()
+Возвращается на предыдущую страницу в истории браузера.
+Пример: PageMethod("go_back")
+-----------------------------------------------------
+go_forward()
+Переходит на следующую страницу в истории браузера.
+Пример: PageMethod("go_forward")
+-----------------------------------------------------
+close()
+Закрывает текущую страницу.
+Пример: PageMethod("close")
+-----------------------------------------------------
+pdf(path="file.pdf", format="A4")
+Генерирует PDF-файл из содержимого страницы.
+Пример: PageMethod("pdf", path="page.pdf", format="A4")
